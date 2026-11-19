@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo')->unique(); // Campo unico para codigo de modulo
-            
+            $table->string('codigo')->unique(); // Campo unico para codigo de modulo}
             $table->string('nombre');
+        
+            $table->timestamps();
+
         });
     }
 
