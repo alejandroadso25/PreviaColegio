@@ -15,16 +15,9 @@ return new class extends Migration
            $table->id();
            $table->string('nombre');
            $table->string('apellido');
-           $table->date('fecha_nacimiento');
+           $table->date('fecha_nacimiento'); // Atributo date para fechas
            $table->string('expediente');
 
-            // Declaracion de atributos foraneos:
-            $table->unsignedBigInteger('module_id'); 
-            
-            // Llamada del atributo:
-            $table->foreign('module_id')->references('id')->on('modules')
-            ->onDelete('cascade');
-            
            $table->timestamps();
         });
     }
