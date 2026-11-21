@@ -26,3 +26,9 @@ Route::get('/modules/{module}', [ResourceController::class, 'showModule']); // V
 Route::put('/modules/{module}', [ResourceController::class, 'updateModule']); // Actualizar Modulo
 Route::delete('/modules/{module}', [ResourceController::class, 'destroyModule']); // Eliminar Modulo
 
+// Rutas Crud para profesores:
+Route::get('/teachers', [ResourceController::class, 'indexTeacher']); // Listar Profesores
+Route::post('/teachers', [ResourceController::class, 'storeTeacher']); // Crear Profesor
+Route::get('/teachers/{teacher}', [ResourceController::class, 'showTeacher']); // Visualizar Profesor especifico
+Route::put('/teachers/{teacher}', [ResourceController::class, 'updateTeacher']); // Actualizar Profesor
+Route::delete('/teachers/{teacher}', [ResourceController::class, 'destroyTeacher']); // Eliminar Profesor

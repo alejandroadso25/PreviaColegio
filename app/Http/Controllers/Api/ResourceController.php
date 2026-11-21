@@ -42,7 +42,7 @@ class ResourceController extends Controller{
     public function updateModule(Request $request, Module $module): JsonResponse {
         // Validacion
         $validated = $request->validate([
-            'codigo' => 'required|string|unique:modules,codigo,'. $module->id,
+            'codigo' => 'required|string|unique:modules,codigo,' . $module->id, //Ignora el registro anterior
             'nombre' => 'required|string',
         ]);
         // Actualizacion del modulo
@@ -64,4 +64,62 @@ class ResourceController extends Controller{
         ]);
     }
 
+    // Metodo Get: Listar todos los profesores:
+    public function indexTeacher(): JsonResponse
+    {
+        return response()->json(Teacher::all());
+    }
+
+    // Metodo Post: Crear un nuevo Profesor:
+    public function storeTeacher (Request $request): JsonResponse
+    {
+        $validated = $request->validate(
+            [
+                'nombre'=> 'required|string',
+                'apellido'=> 'required|string',
+                'telefono'=> 'required|string',
+                'cedula' => 'required|string|unique:teachers,cedula',
+            ]
+        );
+        $teacher = Teacher::create($validated); // Validacion
+        return response ()->json([ // Retorno en formato JSON
+            'message' => 'Profesor creado con éxito.',
+            'data'=> $teacher,
+        ], 201); // 201: Creado
+    }
+
+    // Show: Visualizar Profesor especifico:
+    public function showTeacher (Teacher $teacher): JsonResponse{
+        // Retorno en formato JSON
+        return response()->json($teacher);
+    }
+
+    // Metodo Put: Actualizar un Profesor:
+    public function updateTeacher(Request $request, Teacher $teacher): JsonResponse {
+        // Validacion
+        $validated = $request->validate([
+             'nombre'=> 'required|string',
+             'apellido'=> 'required|string',
+             'telefono'=> 'required|string',
+             'cedula' => 'required|string|unique:teachers,cedula,' . $teacher->id,
+            
+        ]);
+        // Actualizacion del Teacher
+        $teacher->update ($validated);
+        // Retorno en formato JSON
+        return response()->json([
+            'message' => 'Profesor actualizado con éxito.',
+            'data'=> $teacher,
+        ]);
+    }
+
+     // Metodo Delete: Eliminar un Profesor:
+    public function destroyTeacher (Teacher $teacher): JsonResponse {
+        //Eliminacion del modulo
+        $teacher->delete();
+        // Retorno en formato JSON
+        return response()->json([
+            'message' => 'Profesor eliminado con éxito.',
+        ]);
+    }
 }
