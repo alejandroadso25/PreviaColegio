@@ -16,12 +16,12 @@ class Module extends Model
 
     public function teachers () {
         // Un modulo puede tener varios profesores
-        return $this->belogstoMany(
+        return $this->belongsToMany(
             Teacher::class,
             'module_teachers',
             'module_id',
             'teacher_id'
-        )->whileTimestamps();
+        )->withTimestamps(); // Actualiza
     }
 
     public function students () {
@@ -31,6 +31,6 @@ class Module extends Model
             'module_students',
             'module_id',
             'student_id'
-        )->whileTimestamps();
+        )->withTimestamps(); // Actualiza
     }
 }

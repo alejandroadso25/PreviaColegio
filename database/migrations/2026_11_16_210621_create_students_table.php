@@ -17,6 +17,7 @@ return new class extends Migration
            $table->string('apellido');
            $table->date('fecha_nacimiento'); // Atributo date para fechas
            $table->string('expediente');
+           $table->string('imagen')->nullable(); // Atributo imagen para la foto del estudiante
 
            // Atributo foraneo para alumno-delegado:
            $table->unsignedBigInteger('delegado_id')->nullable(); // Nullable porque un alumno no puede tener delegado

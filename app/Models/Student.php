@@ -14,7 +14,8 @@ class Student extends Model
         'apellido',
         'fecha_nacimiento',
         'expediente',
-        'delegado_id'
+        'delegado_id',
+        'imagen', // Atributo para foto
     ];
 
     // Configuración de la fecha año/mes/dia
@@ -30,7 +31,7 @@ class Student extends Model
             'module_students',
             'student_id',
             'module_id'
-        )->whileTimestamps();
+        )->withTimestamps(); // Para cargar img (permite actualizar)
     }
 
     public function delegado() {

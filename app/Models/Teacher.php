@@ -24,12 +24,6 @@ class Teacher extends Model
             'module_teachers',
             'teacher_id',
             'module_id'
-        )->whileTimestamps();
+        )->withTimestamps(); // Actualiza
     }
-
-    
-
-
-
-
 }
