@@ -18,6 +18,13 @@ return new class extends Migration
            $table->date('fecha_nacimiento'); // Atributo date para fechas
            $table->string('expediente');
 
+           // Atributo foraneo para alumno-delegado:
+           $table->unsignedBigInteger('delegado_id')->nullable(); // Nullable porque un alumno no puede tener delegado
+            
+           // Se llama el atributo foraneo:
+            $table->foreign('delegado_id')->references('id')->
+            on('students')->onDelete('set null');
+
            $table->timestamps();
         });
     }
