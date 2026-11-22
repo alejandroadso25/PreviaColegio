@@ -32,3 +32,10 @@ Route::post('/teachers', [ResourceController::class, 'storeTeacher']); // Crear 
 Route::get('/teachers/{teacher}', [ResourceController::class, 'showTeacher']); // Visualizar Profesor especifico
 Route::put('/teachers/{teacher}', [ResourceController::class, 'updateTeacher']); // Actualizar Profesor
 Route::delete('/teachers/{teacher}', [ResourceController::class, 'destroyTeacher']); // Eliminar Profesor
+
+// Rutas Crud para estudiantes:
+Route::get('/students', [ResourceController::class, 'indexStudent']); // Listar Estudiantes
+Route::post('/students', [ResourceController::class, 'storeStudent']); // Crear Estudiante
+Route::get('/students/{student}', [ResourceController::class, 'showStudent']); // Visualizar Estudiante especifico
+Route::put('/students/{student}', [ResourceController::class, 'updateStudent']); // Actualizar Estudiante
+Route::delete('/students/{student}', [ResourceController::class, 'destroyStudent']); // Eliminar Estudiante

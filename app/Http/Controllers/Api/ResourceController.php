@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary; // Importación de Cloudinary
 
 class ResourceController extends Controller{
 
@@ -120,6 +121,113 @@ class ResourceController extends Controller{
         // Retorno en formato JSON
         return response()->json([
             'message' => 'Profesor eliminado con éxito.',
+        ]);
+    }
+
+     // Metodo Get: Listar todos los estudiantes:
+    public function indexStudent(): JsonResponse
+    {
+        return response()->json(Student::all());
+    }
+
+    // Metodo Post: Crear nuevo estudiante:
+    public function storeStudent(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'nombre' => 'required|string',
+            'apellido'=> 'required|string',
+            'fecha_nacimiento'=> 'required|date',
+            'expediente'=> 'required|string',
+            'delegado_id'=> 'nullable|exists:students,id',
+            'imagen'=> 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120' // Campo para imagen
+        ]);
+        
+        // Comprobar la solicitud al servidor:
+        if ($request->hasFile ('imagen')) { // Configuración para subir la imagen
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => config('services.cloudinary.cloud_name'),
+                    'api_key' => config('services.cloudinary.api_key'),
+                    'api_secret' => config('services.cloudinary.api_secret'),
+                ],
+                'url' => [
+                    'secure' => true,
+                ],
+            ]);
+
+            // Carga de imagen al servidor:
+            $result = $cloudinary-> uploadApi()->upload(
+                $request-> file('imagen')->getRealPath(),
+                [
+                    'folder' => 'students',
+                    'resource_type' => 'image',
+                ]
+            );
+
+            // Almanacenamiento de los datos validados por Cloudinary:
+            $validated ['imagen'] = $result ['secure_url'];
+            $validated ['imagen_public_id'] = $result['public_id'];
+        }
+        // Creación del estudiante:
+        $student = Student::create($validated);
+            // Respuesta en json
+            return response()->json([
+            'message' => 'Estudiante creado con éxito.',
+            'data' => $student,
+        ], 201);
+    }
+
+    // Show: Visualizar un estudiante especifico
+    public function showStudent (Student $student): JsonResponse
+    {
+        return response()->json($student);
+    }
+
+    // Metodo Put: Actualizar un estudiante
+    public function updateStudent (Request $request, Student $student){
+        $validated = $request->validate([
+        'nombre' => 'required|string',
+        'apellido' => 'required|string',
+        'fecha_nacimiento' => 'required|date',
+        'expediente' => 'required|string',
+        'delegado_id' => 'nullable|exists:students,id',
+        'imagen' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        // Comprobar solicitud:
+        if ($request->hasFile('imagen')) {
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => config('services.cloudinary.cloud_name'),
+                'api_key' => config('services.cloudinary.api_key'),
+                'api_secret' => config('services.cloudinary.api_secret'),
+            ],
+            'url' => ['secure' => true],
+        ]);
+
+        // Carga al servidor de la nueva imagen:
+        $result = $cloudinary->uploadApi()->upload(
+            $request->file('imagen')->getRealPath(),
+            ['folder' => 'students', 'resource_type' => 'image']
+        );
+        // Validación:
+        $validated['imagen'] = $result['secure_url'];
+    }
+    // Asignación de los campos validos:
+    $student->update($validated);
+    // Respuesta en json
+    return response()->json([
+        'message' => 'Estudiante actualizado con éxito.',
+        'data' => $student,
+    ]);
+    }
+
+    // Metodo Delete: Eliminar un estudiante
+    public function destroyStudent(Student $student): JsonResponse
+    {
+        $student->delete();
+        return response()->json([
+            'message'=> 'Estudiante eliminado con éxito.',
         ]);
     }
 }
