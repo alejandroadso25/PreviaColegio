@@ -42,3 +42,6 @@ Route::delete('/students/{student}', [ResourceController::class, 'destroyStudent
 
 // Ruta para asignar profesores a un modulo:
 Route::put('/modules/{module}/teachers', [ResourceController::class, 'assignTeachers']);
+
+// Ruta para matricular estudiantes en un modulo:
+Route::put('/students/{student}/modules', [ResourceController::class, 'assignModulesToStudent']);

@@ -36,7 +36,7 @@ class ResourceController extends Controller{
     // Show: Visualizar modulo especifico:
     public function showModule(Module $module): JsonResponse{
         // Retorno en formato JSON
-        return response()->json($module->load('teachers')); // Carga profesores relacionados con el modulo 
+        return response()->json($module->load('teachers', 'students')); // Carga profesores y estudiantes relacionados con el modulo
     }
 
     // Metodo Put: Actualizar un modulo:
@@ -243,6 +243,22 @@ class ResourceController extends Controller{
         return response()->json([
         'message' => 'Profesores asignados correctamente.',
         'data' => $module->load('teachers'),
+        ]);
+    }
+
+    // Metodo pivote: Asignar estudiante a modulo
+        public function assignModulesToStudent(Request $request, Student $student): JsonResponse
+    {
+        $validated = $request->validate([
+            'module_ids' => 'required|array|min:1',
+            'module_ids.*' => 'required|integer|distinct|exists:modules,id',
+        ]);
+
+        $student->modules()->sync($validated['module_ids']);
+
+        return response()->json([
+            'message' => 'Matrícula registrada correctamente.',
+            'data' => $student->load('modules'),
         ]);
     }
 }
