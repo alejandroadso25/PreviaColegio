@@ -39,3 +39,6 @@ Route::post('/students', [ResourceController::class, 'storeStudent']); // Crear 
 Route::get('/students/{student}', [ResourceController::class, 'showStudent']); // Visualizar Estudiante especifico
 Route::put('/students/{student}', [ResourceController::class, 'updateStudent']); // Actualizar Estudiante
 Route::delete('/students/{student}', [ResourceController::class, 'destroyStudent']); // Eliminar Estudiante
+
+// Ruta para asignar profesores a un modulo:
+Route::put('/modules/{module}/teachers', [ResourceController::class, 'assignTeachers']);

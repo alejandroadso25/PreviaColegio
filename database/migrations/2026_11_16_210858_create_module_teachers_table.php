@@ -12,18 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('module_teachers', function (Blueprint $table) {
+            $table->id();
             // Declaracion de atributos foraneos:
-                $table->unsignedBigInteger('module_id');
-                $table->unsignedBigInteger('teacher_id');
+            $table->unsignedBigInteger('module_id');
+            $table->unsignedBigInteger('teacher_id');
 
             // Llamada del atributo:
-                $table->foreign('module_id')->references('id')->on('modules')
+            $table->foreign('module_id')->references('id')->on('modules')
                 ->onDelete('cascade');
 
-                $table->foreign('teacher_id')->references('id')->on('teachers')
+            $table->foreign('teacher_id')->references('id')->on('teachers')
                 ->onDelete('cascade');
 
-                $table->timestamps();
+            $table->timestamps();
         });
     }
 
